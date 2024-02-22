@@ -36,8 +36,6 @@ class Core(Resource):
         return str(base64.urlsafe_b64encode(os.urandom(32))).replace('=', '')
 
     def post(self):
-        # check header from user
-
         try:
             filelength = int(request.headers.get("Upload-Length"))
         except ValueError:

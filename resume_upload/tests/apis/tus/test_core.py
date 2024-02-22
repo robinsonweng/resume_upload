@@ -40,7 +40,6 @@ class TestTusServerOptions:
 
 
 class TestTusCreateResource:
-
     def test_tus_server_post(
         self,
         monkeypatch,
