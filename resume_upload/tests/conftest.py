@@ -6,11 +6,14 @@ from typing import (
 
 if TYPE_CHECKING:
     from flask import Flask
+    from flask_caching import Cache
 
 import pytest
 from main import create_app
+from apis.tus.core import cache
 
-@pytest.fixture()
+
+@pytest.fixture(scope="class")
 def app() -> Generator[Flask, None, None]:
     app = create_app()
     app.config.update({
@@ -24,11 +27,11 @@ def app() -> Generator[Flask, None, None]:
 
     # clean up / reset resources here
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def client(app: Flask):
     return app.test_client()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="class")
 def runner(app: Flask):
     return app.test_cli_runner()
