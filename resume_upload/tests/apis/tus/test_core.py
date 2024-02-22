@@ -22,6 +22,14 @@ def test_tus_server_options(app: Flask, client: FlaskClient):
 
     assert response.status_code == 204, response.status_code
 
+def test_tus_server_options(app: Flask, client: FlaskClient):
+    with app.app_context():
+        url = url_for("files_core")
+
+    response = client.post(url)
+
+    assert response.status_code == 201, response.status_code
+
 def test_tus_core_head(app: Flask, client: FlaskClient):
     file_id = "24e533e02ec3bc40c387f1a0e460e216"
     with app.app_context():

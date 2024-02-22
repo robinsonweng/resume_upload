@@ -17,6 +17,17 @@ class Core(Resource):
     def options(self):
         return Response(status=status.NO_CONTENT)
 
+    def post(self):
+        headers = {
+            "Location": "https://tus.example.org/files/24e533e02ec3bc40c387f1a0e460e216",
+            "Tus-Resumable": "1.0.0",
+        }
+
+        return Response(
+            status=status.CREATED,
+            headers=headers,
+        )
+
 
 @tus.route("/<string:file_id>")
 class CoreFileUpload(Resource):
