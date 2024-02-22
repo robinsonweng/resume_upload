@@ -19,6 +19,8 @@ mypy: venv
 	./$(VENV)/bin/pip install -r requirements/dev.txt
 	./$(VENV)/bin/python3 -m mypy resume_upload --show-error-context
 
+check: venv
+	make test mypy
 
 dev-run: venv
 	./$(VENV)/bin/python3 -m flask --app resume_upload/main --debug run
