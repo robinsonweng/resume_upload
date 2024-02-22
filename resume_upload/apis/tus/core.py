@@ -6,11 +6,16 @@ from flask import (
     Response,
     request,
 )
+from flask_caching import (
+    Cache
+)
 
 from http import client as status
 
+
 tus = Namespace("files", path="/files", description="tus protocol")
 
+cache = Cache()
 
 @tus.route("/")
 class Core(Resource):
