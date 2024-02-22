@@ -37,7 +37,7 @@ class Core(Resource):
 
     def post(self):
         try:
-            filelength = int(request.headers.get("Upload-Length"))
+            file_length = int(request.headers.get("Upload-Length"))
         except ValueError:
             return Response(status=status.BAD_REQUEST)
 
@@ -48,10 +48,10 @@ class Core(Resource):
         resuorce_path = url_for("files_core_file_upload", file_id=file_id)
         resource_url = urljoin(request.base_url, resuorce_path)
 
-        resource= {
+        resource = {
             "file": '\0',
             "file_metadata": file_metadata,
-            "file_length": filelength,
+            "file_length": file_length,
         }
         cache.set(file_id, resource)
 
