@@ -3,8 +3,8 @@ from flask_restx import (
     Namespace,
 )
 from flask import (
-    make_response,
     Response,
+    request,
 )
 
 from http import client as status
@@ -27,7 +27,26 @@ class Core(Resource):
         - OPTIONS
     """
     def head(self, file_id):
-        return Response(status=status.OK)
+        # check header
+        tus_version = request.headers.get("Tus-Reusmable")
+
+        headers = {
+            "Upload-Offset": "70",
+            "Tus-Resumable": "1.0.0",
+        }
+        return Response(
+            status=status.OK,
+            headers=headers,
+        )
 
     def patch(self, file_id):
-        return Response(status=status.NO_CONTENT)
+        headers = {
+            "Content-Type": "application/offset+octet-stream",
+            "Upload-Offset": "70",
+            "Tus-Resumable": "1.0.0",
+        }
+
+        return Response(
+            status=status.NO_CONTENT,
+            headers=headers,
+        )
