@@ -35,3 +35,8 @@ def client(app: Flask):
 @pytest.fixture(scope="class")
 def runner(app: Flask):
     return app.test_cli_runner()
+
+
+@pytest.fixture(scope="class")
+def cache() -> Cache:
+    return cache
