@@ -3,6 +3,7 @@ from typing import (
     TYPE_CHECKING,
     List,
     Dict,
+    Sized,
 )
 
 if TYPE_CHECKING:
@@ -131,7 +132,11 @@ class TestTusCheckFileInfo:
 
         flask_cache.set(file_id, resource)
 
-        resource_length = len(resource["file"])
+        binary = resource["file"]
+
+        assert isinstance(binary, Sized), binary
+
+        resource_length = len(binary)
 
         with app.app_context():
             url = url_for("files_core_file_upload", file_id=file_id)
