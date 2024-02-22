@@ -5,10 +5,35 @@ from typing import (
     Dict,
 )
 
+from flask import (
+    url_for
+)
+
 if TYPE_CHECKING:
-    pass
+    from flask.testing import FlaskClient
+    from flask import Flask
 
+def test_tus_server_options(app: Flask, client: FlaskClient):
+    with app.app_context():
+        url = url_for("files_tus_options")
 
-def test_hello_world(client):
+    response = client.options(url)
 
-    assert False, client
+    assert response.status_code == 204, response.status_code
+
+def test_tus_core_head(app: Flask, client: FlaskClient):
+    with app.app_context():
+        url = url_for("files_core", file_id=123)
+
+    response = client.head(url)
+
+    assert response.status_code == 200, response.status_code
+
+def test_tus_core_patch(app: Flask, client: FlaskClient):
+    with app.app_context():
+        url = url_for("files_core", file_id=123)
+
+    response = client.patch(url)
+
+    assert response.status_code == 204, response.status_code
+

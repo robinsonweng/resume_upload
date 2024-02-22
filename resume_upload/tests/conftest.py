@@ -15,6 +15,7 @@ def app() -> Generator[Flask, None, None]:
     app = create_app()
     app.config.update({
         "TESTING": True,
+        "SERVER_NAME": "localhost",
     })
 
     # other setup can go here
