@@ -10,6 +10,8 @@ if TYPE_CHECKING:
     from flask.testing import FlaskClient
     from flask_caching import Cache
 
+import os
+import base64
 import pytest
 from urllib.parse import (
     urlparse,
@@ -45,8 +47,11 @@ class TestTusCreateResource:
         app: Flask,
         client: FlaskClient,
         flask_cache: Cache,
+        filename: str,
+        file: bytes,
     ):
         file_id = "24e533e02ec3bc40c387f1a0e460e216"
+
         monkeypatch.setattr(Core, "generate_file_id", lambda *_: file_id)
 
         with app.app_context():
@@ -56,7 +61,16 @@ class TestTusCreateResource:
         with app.test_request_context():
             base_url = request.base_url
 
-        response = client.post(url)
+        based_filename = base64.b64encode(filename.encode()).decode()
+        file_metadata = f"filename {based_filename}"
+        file_length = len(file)
+
+        headers = {
+            "Upload-Length": file_length,
+            "Upload-Metadata": file_metadata,
+        }
+
+        response = client.post(url, headers=headers)
 
         resource_url = urljoin(base_url, resource_path)
 
@@ -75,7 +89,9 @@ class TestTusCreateResource:
 
         cached_resource = flask_cache.get(file_id)
 
-        assert cached_resource == '\0', cached_resource
+        assert cached_resource["file"] == '\0', cached_resource["file"]
+        assert cached_resource["file_metadata"] == file_metadata, cached_resource["file_metadata"]
+        assert cached_resource["file_length"] == file_length, cached_resource["file_length"]
 
 
 class TestTusCheckFileInfo:

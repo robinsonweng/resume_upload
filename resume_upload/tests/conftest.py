@@ -40,3 +40,11 @@ def runner(app: Flask):
 @pytest.fixture(scope="class")
 def flask_cache(app: Flask) -> Cache:
     return cache
+
+@pytest.fixture(scope="class")
+def filename() -> str:
+    return "test file.txt"
+
+@pytest.fixture(scope="class")
+def file() -> bytes:
+    return "test file text".encode()

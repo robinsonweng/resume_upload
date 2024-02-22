@@ -36,12 +36,26 @@ class Core(Resource):
         return str(base64.urlsafe_b64encode(os.urandom(32))).replace('=', '')
 
     def post(self):
-        file_id = self.generate_file_id()
+        # check header from user
 
-        cache.set(file_id, '\0')
+        try:
+            filelength = int(request.headers.get("Upload-Length"))
+        except ValueError:
+            return Response(status=status.BAD_REQUEST)
+
+        file_metadata = request.headers.get("Upload-Metadata")
+
+        file_id = self.generate_file_id()
 
         resuorce_path = url_for("files_core_file_upload", file_id=file_id)
         resource_url = urljoin(request.base_url, resuorce_path)
+
+        resource= {
+            "file": '\0',
+            "file_metadata": file_metadata,
+            "file_length": filelength,
+        }
+        cache.set(file_id, resource)
 
         headers = {
             "Location": resource_url,
