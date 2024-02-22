@@ -13,13 +13,13 @@ tus = Namespace("files", path="/files", description="tus protocol")
 
 
 @tus.route("/")
-class TusOptions(Resource):
+class Core(Resource):
     def options(self):
         return Response(status=status.NO_CONTENT)
 
 
 @tus.route("/<string:file_id>")
-class Core(Resource):
+class CoreFileUpload(Resource):
     """
         core protocol:
         - HEAD

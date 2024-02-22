@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 def test_tus_server_options(app: Flask, client: FlaskClient):
     with app.app_context():
-        url = url_for("files_tus_options")
+        url = url_for("files_core")
 
     response = client.options(url)
 
@@ -24,7 +24,7 @@ def test_tus_server_options(app: Flask, client: FlaskClient):
 def test_tus_core_head(app: Flask, client: FlaskClient):
     file_id = "24e533e02ec3bc40c387f1a0e460e216"
     with app.app_context():
-        url = url_for("files_core", file_id=file_id)
+        url = url_for("files_core_file_upload", file_id=file_id)
 
     response = client.head(url)
 
@@ -40,7 +40,7 @@ def test_tus_core_head(app: Flask, client: FlaskClient):
 def test_tus_core_patch(app: Flask, client: FlaskClient):
     file_id = "24e533e02ec3bc40c387f1a0e460e216"
     with app.app_context():
-        url = url_for("files_core", file_id=file_id)
+        url = url_for("files_core_file_upload", file_id=file_id)
 
     response = client.patch(url)
 
