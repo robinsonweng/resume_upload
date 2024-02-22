@@ -38,5 +38,5 @@ def runner(app: Flask):
 
 
 @pytest.fixture(scope="class")
-def cache() -> Cache:
+def flask_cache(app: Flask) -> Cache:
     return cache
