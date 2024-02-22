@@ -94,15 +94,52 @@ class TestTusCreateResource:
 
 
 class TestTusCheckFileInfo:
-    def test_tus_core_head(self, app: Flask, client: FlaskClient):
+    def test_tus_core_head_file_not_found(self, app: Flask, client: FlaskClient):
         file_id = "24e533e02ec3bc40c387f1a0e460e216"
+
         with app.app_context():
             url = url_for("files_core_file_upload", file_id=file_id)
 
         response = client.head(url)
 
         expected_header = {
-            "Upload-Offset": "70",
+            "Tus-Resumable": "1.0.0",
+        }
+
+        assert response.status_code == 404, response.status_code
+        assert set(expected_header.items()).issubset(set(response.headers.items()))
+        # ^ check if these header in the reponse headers
+
+    def test_tus_core_head_file_founded(
+            self,
+            app: Flask,
+            client: FlaskClient,
+            flask_cache: Cache,
+            filename: str,
+            file: bytes,
+        ):
+        file_id = "24e533e02ec3bc40c387f1a0e460e216"
+
+        # set file in cache
+        file_metadata = f"filename {base64.b64encode(filename.encode()).decode()}"
+        file_length = len(file)
+        resource = {
+            "file": '\0',
+            "file_metadata": file_metadata,
+            "file_length": file_length,
+        }
+
+        flask_cache.set(file_id, resource)
+
+        resource_length = len(resource["file"])
+
+        with app.app_context():
+            url = url_for("files_core_file_upload", file_id=file_id)
+
+        response = client.head(url)
+
+        expected_header = {
+            "Upload-Offset": str(resource_length), # always string in http header
             "Tus-Resumable": "1.0.0",
         }
 

@@ -78,8 +78,21 @@ class CoreFileUpload(Resource):
         # check header
         tus_version = request.headers.get("Tus-Reusmable")
 
+        cached_resource = cache.get(file_id) # no sanatize?
+
+        if cached_resource is None:
+            headers = {
+                "Tus-Resumable": "1.0.0"
+            }
+            return Response(
+                status=status.NOT_FOUND,
+                headers=headers,
+            )
+
+        cached_length = len(cached_resource["file"])
+
         headers = {
-            "Upload-Offset": "70",
+            "Upload-Offset": cached_length,
             "Tus-Resumable": "1.0.0",
         }
         return Response(
