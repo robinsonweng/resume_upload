@@ -5,13 +5,14 @@ from typing import (
     Dict,
 )
 
+if TYPE_CHECKING:
+    from flask.testing import FlaskClient
+    from flask import Flask
+
 from flask import (
     url_for
 )
 
-if TYPE_CHECKING:
-    from flask.testing import FlaskClient
-    from flask import Flask
 
 def test_tus_server_options(app: Flask, client: FlaskClient):
     with app.app_context():
