@@ -22,7 +22,7 @@ def test_tus_server_options(app: Flask, client: FlaskClient):
 
     assert response.status_code == 204, response.status_code
 
-def test_tus_server_options(app: Flask, client: FlaskClient):
+def test_tus_server_post(app: Flask, client: FlaskClient):
     with app.app_context():
         url = url_for("files_core")
 
