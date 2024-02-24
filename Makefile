@@ -13,7 +13,7 @@ install:
 
 test: venv
 	./$(VENV)/bin/pip install -r requirements/dev.txt
-	./$(VENV)/bin/python3 -m pytest -v --pyargs resume_upload tests
+	./$(VENV)/bin/python3 -m pytest -v -x --pyargs resume_upload tests
 
 mypy: venv
 	./$(VENV)/bin/pip install -r requirements/dev.txt
