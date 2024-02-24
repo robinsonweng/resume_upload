@@ -47,4 +47,4 @@ def filename() -> str:
 
 @pytest.fixture(scope="class")
 def file() -> bytes:
-    return "test file text".encode()
+    return "test file text is not very long".encode()
