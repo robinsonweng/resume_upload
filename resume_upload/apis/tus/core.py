@@ -101,12 +101,61 @@ class CoreFileUpload(Resource):
         )
 
     def patch(self, file_id):
+        resource = cache.get(file_id)
+        if resource is None:
+            headers = {
+                "Tus-Resumable": "1.0.0",
+            }
+            return Response(
+                status=status.NOT_FOUND,
+                headers=headers
+            )
+
+        try:
+            offset = int(request.headers.get("Upload-Offset"))
+        except ValueError:
+            headers = {
+                "Tus-Resumable": "1.0.0",
+            }
+            return Response(
+                status=status.BAD_REQUEST,
+                headers=headers,
+            )
+
+        content_type = request.headers.get("Content-Type")
+        if content_type != "application/offset+octet-stream":
+            headers = {
+                "Tus-Resumable": "1.0.0",
+            }
+            return Response(
+                status=status.UNSUPPORTED_MEDIA_TYPE,
+                headers=headers,
+            )
+
+        try:
+            content_length = int(request.headers.get("Content-Length"))
+        except ValueError:
+            headers = {
+                "Tus-Resumable": "1.0.0",
+            }
+            return Response(
+                status=status.BAD_REQUEST,
+                headers=headers,
+            )
+
+        file_chunk = request.data
+        chunk_length = len(file_chunk)
+        updated_offset = offset + chunk_length
+
+        file = resource["file"]
+        resource["file"] = file + file_chunk
+        cache.set(file_id, resource)
+
         headers = {
             "Content-Type": "application/offset+octet-stream",
-            "Upload-Offset": "70",
+            "Upload-Offset": updated_offset,
             "Tus-Resumable": "1.0.0",
         }
-
         return Response(
             status=status.NO_CONTENT,
             headers=headers,
