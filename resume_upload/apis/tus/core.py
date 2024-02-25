@@ -31,10 +31,6 @@ class Core(Resource):
     def options(self):
         return Response(status=status.NO_CONTENT)
 
-    @staticmethod
-    def generate_file_id():
-        return str(base64.urlsafe_b64encode(os.urandom(32))).replace('=', '')
-
     def post(self):
         try:
             file_length = int(request.headers.get("Upload-Length"))
@@ -65,6 +61,9 @@ class Core(Resource):
             headers=headers,
         )
 
+    @staticmethod
+    def generate_file_id():
+        return str(base64.urlsafe_b64encode(os.urandom(32))).replace('=', '')
 
 @tus.route("/<string:file_id>")
 class CoreFileUpload(Resource):
