@@ -20,7 +20,7 @@ from flask import (
     request,
 )
 
-from apis.tus.core import (
+from resume_upload.apps.tus import (
     Core,
 )
 

@@ -9,13 +9,13 @@ if TYPE_CHECKING:
     from flask_caching import Cache
 
 import pytest
-from main import create_app
-from apis.tus.core import cache
+from resume_upload.apps import init_app
+from resume_upload.apps.tus import cache
 
 
 @pytest.fixture(scope="class")
 def app() -> Generator[Flask, None, None]:
-    app = create_app()
+    app = init_app()
     app.config.update({
         "TESTING": True,
         "SERVER_NAME": "localhost",

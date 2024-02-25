@@ -22,6 +22,7 @@ from urllib.parse import (
 
 tus = Namespace("files", path="/files", description="tus protocol")
 
+
 cache = Cache()
 
 
