@@ -28,7 +28,17 @@ cache = Cache()
 @tus.route("/")
 class Core(Resource):
     def options(self):
-        return Response(status=status.NO_CONTENT)
+        headers = {
+            "Tus-Resumable": "1.0.0",
+            "Tus-Version": "1.0.0",
+            "Tus-Max-Size": "1073741824",
+            "Tus-Extension": "creation,expiration",
+        }
+
+        return Response(
+            status=status.NO_CONTENT,
+            headers=headers,
+        )
 
     def post(self):
         try:
