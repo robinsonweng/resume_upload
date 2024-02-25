@@ -16,15 +16,14 @@ from flask_caching import (
 
 from http import client as status
 from urllib.parse import (
-    urlparse,
     urljoin
 )
-
 
 
 tus = Namespace("files", path="/files", description="tus protocol")
 
 cache = Cache()
+
 
 @tus.route("/")
 class Core(Resource):
@@ -65,6 +64,7 @@ class Core(Resource):
     def generate_file_id():
         return str(base64.urlsafe_b64encode(os.urandom(32))).replace('=', '')
 
+
 @tus.route("/<string:file_id>")
 class CoreFileUpload(Resource):
     """
@@ -75,9 +75,8 @@ class CoreFileUpload(Resource):
     """
     def head(self, file_id):
         # check header
-        tus_version = request.headers.get("Tus-Reusmable")
 
-        cached_resource = cache.get(file_id) # no sanatize?
+        cached_resource = cache.get(file_id)  # no sanatize?
 
         if cached_resource is None:
             headers = {
@@ -132,7 +131,7 @@ class CoreFileUpload(Resource):
             )
 
         try:
-            content_length = int(request.headers.get("Content-Length"))
+            int(request.headers.get("Content-Length"))
         except ValueError:
             headers = {
                 "Tus-Resumable": "1.0.0",

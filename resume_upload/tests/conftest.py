@@ -27,6 +27,7 @@ def app() -> Generator[Flask, None, None]:
 
     # clean up / reset resources here
 
+
 @pytest.fixture(scope="class")
 def client(app: Flask):
     return app.test_client()
@@ -41,9 +42,11 @@ def runner(app: Flask):
 def flask_cache(app: Flask) -> Cache:
     return cache
 
+
 @pytest.fixture(scope="class")
 def filename() -> str:
     return "test file.txt"
+
 
 @pytest.fixture(scope="class")
 def file() -> bytes:

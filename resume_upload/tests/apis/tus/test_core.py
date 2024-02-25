@@ -1,8 +1,6 @@
 from __future__ import annotations
 from typing import (
     TYPE_CHECKING,
-    List,
-    Dict,
     Sized,
 )
 
@@ -11,9 +9,7 @@ if TYPE_CHECKING:
     from flask.testing import FlaskClient
     from flask_caching import Cache
 
-import os
 import base64
-import pytest
 from urllib.parse import (
     urlparse,
     urljoin,
@@ -26,7 +22,6 @@ from flask import (
 
 from apis.tus.core import (
     Core,
-    CoreFileUpload,
 )
 
 
@@ -112,13 +107,13 @@ class TestTusCheckFileInfo:
         # ^ check if these header in the reponse headers
 
     def test_tus_core_head_resource_founded(
-            self,
-            app: Flask,
-            client: FlaskClient,
-            flask_cache: Cache,
-            filename: str,
-            file: bytes,
-        ):
+        self,
+        app: Flask,
+        client: FlaskClient,
+        flask_cache: Cache,
+        filename: str,
+        file: bytes,
+    ):
         file_id = "24e533e02ec3bc40c387f1a0e460e216"
 
         # set file in cache
@@ -144,7 +139,7 @@ class TestTusCheckFileInfo:
         response = client.head(url)
 
         expected_header = {
-            "Upload-Offset": str(resource_length), # always string in http header
+            "Upload-Offset": str(resource_length),  # always string in http header
             "Tus-Resumable": "1.0.0",
         }
 
@@ -214,13 +209,13 @@ class TestTusUploadFile:
         assert set(expected_header.items()).issubset(set(response.headers.items()))
 
     def test_tus_core_patch_resource_founded(
-            self,
-            app: Flask,
-            client: FlaskClient,
-            flask_cache: Cache,
-            filename: str,
-            file: bytes,
-        ):
+        self,
+        app: Flask,
+        client: FlaskClient,
+        flask_cache: Cache,
+        filename: str,
+        file: bytes,
+    ):
         file_id = "24e533e02ec3bc40c387f1a0e460e216"
 
         file_length = len(file)
