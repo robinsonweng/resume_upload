@@ -10,6 +10,8 @@ clean:
 install:
 	python$(PY_VERSION) -m venv $(VENV)
 	./$(VENV)/bin/pip install -r requirements/prod.txt
+	chmod +x git-hooks/install-git-hooks
+	@git-hooks/install-git-hooks
 
 install-dev:
 	./$(VENV)/bin/pip install -r requirements/dev.txt

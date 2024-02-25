@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if ! test -d .git; then
+    echo "The git hook should run under dir .git."
+    exit 1
+fi
+
+ln -sf ../../git-hooks/pre-push.hook .git/hooks/pre-push || exit 1
+chmod +x .git/hooks/pre-push
+
+exit 0
