@@ -6,7 +6,7 @@ using flask to implement tus protocol
 ## install & run
 
 ### requirements
-- python==3.12.1
+- python==3.12.2
 - Flask==3.0.2
 - flask-restx==1.3.0
 
@@ -24,3 +24,23 @@ using flask to implement tus protocol
 
 ### run all checks
 - `make check`
+
+
+## TODO
+
+### backend
+- Entities
+    - Chunk
+    - TUS extension
+    - TUS version
+- Repository
+
+### frontend
+- React.js? or Vue.js?
+
+### infra
+- [ ] aws
+    - terraform? pulumi?
+    - ec2
+    - app deploy?
+    - rds?
