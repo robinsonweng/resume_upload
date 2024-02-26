@@ -12,14 +12,15 @@ import pytest
 from resume_upload.apps import init_app
 from resume_upload.apps.tus import cache
 
+from resume_upload.configs import (
+    TestConfig
+)
 
 @pytest.fixture(scope="class")
 def app() -> Generator[Flask, None, None]:
     app = init_app()
-    app.config.update({
-        "TESTING": True,
-        "SERVER_NAME": "localhost",
-    })
+    app.config.from_object(TestConfig())
+
 
     # other setup can go here
 
