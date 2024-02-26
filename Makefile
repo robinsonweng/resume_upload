@@ -35,7 +35,7 @@ check: venv
 	./$(VENV)/bin/python3 -m flake8 resume_upload
 
 dev-run: venv
-	./$(VENV)/bin/python3 -m flask --app resume_upload/main --debug run
+	./$(VENV)/bin/python3 -m flask --app resume_upload/wsgi --debug run
 
 # if make commands dont generate files, use .PHONY to ignore it
 # see: https://www.gnu.org/software/make/manual/make.html#Phony-Targets.
