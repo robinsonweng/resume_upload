@@ -29,8 +29,9 @@ using flask to implement tus protocol
 ## TODO
 
 ### backend
-- [ ] using [application factories](https://flask.palletsprojects.com/en/3.0.x/patterns/appfactories/) to organize project
+- [x] using [application factories](https://flask.palletsprojects.com/en/3.0.x/patterns/appfactories/) to organize project
 - [ ] refactor flask config
+- [ ] logging
 
 - Entities
     - Chunk
